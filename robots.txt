@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://michellepalinkas.github.io/sitemap.xml
