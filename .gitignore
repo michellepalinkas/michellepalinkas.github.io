@@ -1,0 +1,8 @@
+*.psd
+*.mp4
+*.mov
+*.zip
+*.docx
+Thumbs.db
+desktop.ini
+.DS_Store
