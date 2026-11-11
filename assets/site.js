@@ -147,8 +147,8 @@ $$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttri
 const film=$('#film');
 {const im=new Image();im.onload=()=>{if(im.naturalWidth<200)film.classList.add('noposter')};im.onerror=()=>film.classList.add('noposter');im.src='https://i.ytimg.com/vi/'+film.dataset.yt+'/maxresdefault.jpg'}
 const filmHTML=film.innerHTML;function resetFilm(){film.innerHTML=filmHTML}
-function playFilm(){if(film.querySelector('iframe'))return;if(typeof stopYT==='function')stopYT();film.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${film.dataset.yt}?autoplay=1&rel=0" title="The Optical Frontier" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`}
-film.addEventListener('click',playFilm);
+function playFilm(){if(film.querySelector('iframe'))return;if(typeof stopYT==='function')stopYT();film.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${film.dataset.yt}?autoplay=1&rel=0" title="The Optical Frontier" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;film.querySelector('iframe').focus()}
+film.addEventListener('click',e=>{if(e.target.closest('.film-btn'))playFilm()});
 
 
 /* ---- inline YouTube players on work cards ---- */

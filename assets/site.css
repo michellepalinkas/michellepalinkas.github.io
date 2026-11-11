@@ -676,3 +676,8 @@ footer a:hover{color:var(--red)}
 .am h3{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .am p{margin-top:12px;font-size:16px;line-height:1.6;color:#c9cacd;max-width:52ch}
 @media (max-width:760px){.about-more{grid-template-columns:1fr;gap:28px}}
+
+/* v7: film player sits beside its play button, not inside it */
+.film .film-btn{position:absolute;inset:0;width:100%;height:100%;padding:0;margin:0;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;z-index:1}
+.film .film-btn:focus-visible{outline:2px solid var(--red);outline-offset:-4px}
+.film iframe{z-index:2}
