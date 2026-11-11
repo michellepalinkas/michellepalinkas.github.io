@@ -58,11 +58,11 @@ if(wf){
 
 /* ---- odometer counters ---- */
 $$('[data-roll]').forEach(el=>{
-  const val=el.dataset.roll;el.setAttribute('role','img');el.setAttribute('aria-label',val);el.classList.add('roll');const cols=[];
+  const val=el.dataset.roll;el.textContent='';const sr=document.createElement('span');sr.className='sr-only';sr.textContent=val;el.before(sr);el.setAttribute('aria-hidden','true');el.classList.add('roll');const cols=[];
   [...val].forEach((ch,i)=>{
-    if(!/\d/.test(ch)){const s=document.createElement('span');s.textContent=ch;el.append(s);return}
+    if(!/\d/.test(ch)){const s=document.createElement('span');s.className='sep';s.dataset.ch=ch;el.append(s);return}
     const col=document.createElement('span');col.className='col';const d=+ch,loops=2+(val.length-i);let html='';
-    for(let k=0;k<=loops*10+d;k++)html+=`<span>${k%10}</span>`;col.innerHTML=html;col.dataset.end=loops*10+d;
+    for(let k=0;k<=loops*10+d;k++)html+=(k?'\n':'')+(k%10);col.dataset.seq=html;col.dataset.end=loops*10+d;
     col.style.transform=`translateY(-${(loops*10+d)*.9}em)`;el.append(col);cols.push(col);
   });
   if(reduce)return;
