@@ -223,7 +223,8 @@ zoomGroups.forEach(([sel,title])=>{const imgs=$$(sel);imgs.forEach((im,i)=>{
 })});
 /* film frames: click the scene to open the frame on screen */
 const frPin=$('#frames .pin');
-const frOpenList=k=>{const fr=$$('.frame-stack img');openList(fr.map((x,j)=>({src:x.currentSrc||x.src,t:'The Optical Frontier',s:`Frame ${String(j+1).padStart(2,'0')} of ${fr.length}`})),k,$('#frOpen'))};
+const frExtra=[{src:'assets/work/event-kickoff.jpg',t:'The Optical Frontier',s:'In the room. The 2025 regional kickoff in the main hall of The Grove Park Inn, Asheville.'}];
+const frOpenList=k=>{const fr=$$('.frame-stack img');openList(fr.map((x,j)=>({src:x.currentSrc||x.src,t:'The Optical Frontier',s:`Frame ${String(j+1).padStart(2,'0')} of ${fr.length}`})).concat(frExtra),k,$('#frOpen'))};
 $('#frOpen').addEventListener('click',e=>{e.stopPropagation();frOpenList(0)});
 if(frPin){frPin.classList.add('zoomable');frPin.addEventListener('click',e=>{if(e.target.closest('a,button'))return;const fr=$$('.frame-stack img');const hit=fr.indexOf(e.target);const on=hit>=0&&reduce?hit:Math.max(0,fr.findIndex(x=>x.classList.contains('on')));openList(fr.map((x,k)=>({src:x.currentSrc||x.src,t:'The Optical Frontier',s:`Frame ${String(k+1).padStart(2,'0')} of ${fr.length}`})),on,frPin)})}
 $('#lbX').onclick=close;$('#lbP').onclick=()=>show(cur-1);$('#lbN').onclick=()=>show(cur+1);
@@ -262,7 +263,7 @@ const show=k=>{i=(k+data.items.length)%data.items.length;const it=data.items[i];
 const open=(id,from)=>{const el=document.getElementById('cm-'+id);if(!el)return;data=JSON.parse(el.textContent);opener=from;
   $('#cmTag').textContent=data.tag||'';$('#cmT').textContent=data.title;$('#cmD').textContent=data.desc||'';
   $('#cmCr').innerHTML='';(data.credits||[]).forEach(([t,d])=>{const w=document.createElement('div');w.innerHTML='<dt></dt><dd></dd>';w.firstChild.textContent=t;w.lastChild.textContent=d;$('#cmCr').append(w)});
-  th.innerHTML='';data.items.forEach((it,j)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',`Show image ${j+1}: ${it.alt}`);const t=document.createElement('img');t.src=it.thumb||it.src;t.alt='';b.append(t);if(it.video||it.yt)b.classList.add('vid');b.addEventListener('click',()=>show(j));th.append(b)});
+  th.innerHTML='';data.items.forEach((it,j)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',`Show image ${j+1}: ${it.alt}`);const t=document.createElement('img');t.alt='';t.addEventListener('error',()=>{if(it.yt&&!t.dataset.f){t.dataset.f='1';t.src=`https://img.youtube.com/vi/${it.yt}/mqdefault.jpg`}else{t.remove();b.classList.add('nothumb')}});t.src=it.thumb||it.src;b.append(t);if(it.video||it.yt)b.classList.add('vid');b.addEventListener('click',()=>show(j));th.append(b)});
   const multi=data.items.length>1;$('#cmP').hidden=$('#cmN').hidden=!multi;th.hidden=!multi;
   savedY=scrollY;document.documentElement.style.scrollBehavior='auto';document.body.style.cssText+=`;position:fixed;top:${-savedY}px;left:0;right:0;overflow:hidden`;
   window.motionPaused=window.motionPaused;cm.hidden=false;requestAnimationFrame(()=>cm.classList.add('open'));show(0);$('#cmX').focus()};
@@ -279,3 +280,12 @@ document.addEventListener('keydown',e=>{if(cm.hidden)return;
 let x0=null,y0=0;const st=$('#cmStage');st.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});
 st.addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy))show(i+(dx<0?1:-1));x0=null});
 })();
+
+/* active section in the top navigation */
+(()=>{const $$=(q,c=document)=>[...c.querySelectorAll(q)];const links=$$('#menu a[href^="#"]:not(.btn)');if(!links.length)return;
+const map=links.map(a=>[a,document.querySelector(a.getAttribute('href'))]).filter(x=>x[1]);
+const alias={frames:'awards'};let raf=0;
+const upd=()=>{raf=0;const y=innerHeight*0.35;let cur=null;
+  $$('main > section[id]').forEach(sec=>{const r=sec.getBoundingClientRect();if(r.top<=y&&r.bottom>y)cur=sec.id});
+  cur=alias[cur]||cur;map.forEach(([a,sec])=>{const on=sec.id===cur;a.classList.toggle('is-active',on);on?a.setAttribute('aria-current','true'):a.removeAttribute('aria-current')})};
+addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(upd)},{passive:true});addEventListener('resize',upd);upd()})();

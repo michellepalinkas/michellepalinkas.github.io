@@ -792,3 +792,13 @@ button.card-link{background:none;border:0;padding:0;cursor:pointer;text-align:le
 .awards3{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media (max-width:900px){.awards3{grid-template-columns:minmax(0,1fr)}}
 .aw b{overflow-wrap:anywhere}
+/* keep the nav on one line on small laptops */
+@media (min-width:1181px) and (max-width:1279px){#menu a:not(.btn){padding-left:10px;padding-right:10px}}
+/* video thumbnail with no preview image: keep the frame, show the play mark */
+.cm-thumbs button.nothumb{background:linear-gradient(135deg,#1b1b20,#09090b)}
+/* current section in the top navigation (desktop) */
+@media (min-width:1181px){.nav ul a.is-active:not(.btn){color:var(--paper)}.nav ul a.is-active:not(.btn)::after{transform:none}}
+/* blur lives on a backing layer so the open mobile menu still covers the full screen after scrolling */
+.nav.scrolled{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
+.nav::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;transition:background .4s}
+.nav.scrolled::before{background:rgba(7,7,8,.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
