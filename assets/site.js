@@ -65,11 +65,20 @@ $$('[data-roll]').forEach(el=>{
     for(let k=0;k<=loops*10+d;k++)html+=(k?'\n':'')+(k%10);col.dataset.seq=html;col.dataset.end=loops*10+d;
     col.style.transform=`translateY(-${(loops*10+d)*.9}em)`;el.append(col);cols.push(col);
   });
-  if(reduce)return;
-  cols.forEach(c=>c.style.transform=`translateY(-${(c.dataset.end%10)*.9}em)`);
-  new IntersectionObserver(([e],o)=>{if(!e.isIntersecting)return;o.disconnect();
-    cols.forEach((c,i)=>requestAnimationFrame(()=>requestAnimationFrame(()=>{c.style.transition=`transform ${1.6+i*.25}s cubic-bezier(.2,.7,.1,1)`;c.style.transform=`translateY(-${c.dataset.end*.9}em)`})));
-  },{threshold:.6}).observe(el);
+  /* measure the real line pitch in pixels, so Safari's line rounding can't drift the digits */
+  /* whole pixel line height, so every row is identical on every browser */
+  const fit=()=>{const fs=parseFloat(getComputedStyle(el).fontSize);const p=Math.round(fs*.9);el.style.setProperty('--lh',p+'px');el.style.height=p+'px';el.querySelectorAll('.sep').forEach(s=>{s.style.height=p+'px';s.style.lineHeight=p+'px'});return p};
+  let done=reduce;
+  const place=(k,anim)=>{const p=fit();cols.forEach((c,i)=>{c.style.transition=anim?`transform ${1.6+i*.25}s cubic-bezier(.2,.7,.1,1)`:'none';c.style.transform=`translateY(${-(k(c))*p}px)`})};
+  const final=()=>place(c=>+c.dataset.end,false);
+  (document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{
+    if(reduce){final();return}
+    place(c=>c.dataset.end%10,false);
+    new IntersectionObserver(([e],o)=>{if(!e.isIntersecting)return;o.disconnect();done=true;
+      requestAnimationFrame(()=>requestAnimationFrame(()=>place(c=>+c.dataset.end,true)));
+    },{threshold:.6}).observe(el);
+  });
+  addEventListener('resize',()=>{if(done)final()});
 });
 
 /* ---- horizontal pinned featured work ---- */
@@ -91,8 +100,8 @@ const steer=sec=>e=>{
 };
 hs.addEventListener('mousemove',steer(hs));
 /* 12 Days rows: same pinned scroll and mouse steering as the work ribbon */
-const ds=$('#days'),dRowEls=[$('#dRowA'),$('#dRowB')],dBar=$('#dBar');
-function setupDays(){
+const ds=$('section#days'),dRowEls=[$('#dRowA'),$('#dRowB')].filter(Boolean),dBar=$('#dBar');
+function setupDays(){if(!ds)return;
   ds.classList.remove('pinned');ds.style.height='';dRowEls.forEach(r=>r.style.transform='');
   if(!(wide.matches&&!reduce))return;
   ds.classList.add('pinned');
@@ -100,7 +109,7 @@ function setupDays(){
   const d=dRowEls.map(r=>Math.max(0,r.scrollWidth-innerWidth));const dist=Math.max(...d);
   const span=Math.round(dist*.6);ds.dataset.dist=span;dRowEls.forEach((r,i)=>r.dataset.dist=d[i]);ds.style.height=(innerHeight+span)+'px';
 }
-ds.addEventListener('mousemove',steer(ds));
+ds&&ds.addEventListener('mousemove',steer(ds));
 setupDays();addEventListener('resize',setupDays);addEventListener('load',setupDays);wide.addEventListener('change',setupDays);
 addEventListener('wheel',()=>{lastWheel=performance.now();hsTarget=null},{passive:true});
 addEventListener('keydown',()=>{hsTarget=null});
@@ -127,7 +136,7 @@ function tick(){
     if(ws.length){const r=wf.getBoundingClientRect();const p=clamp((vh*.85-r.top)/(r.height+vh*.3));const n=Math.round(p*ws.length);for(let i=0;i<ws.length;i++)ws[i].classList.toggle('on',i<n)}
     // pinned horizontal
     if(hsTarget!==null){const d=hsTarget-scrollY;if(Math.abs(d)<1)hsTarget=null;else scrollTo(0,scrollY+d*.1)}
-    if(ds.classList.contains('pinned')){const r=ds.getBoundingClientRect();const p=clamp(-r.top/Math.max(1,+ds.dataset.dist));dRowEls.forEach(x=>x.style.transform=`translateX(${-p*(+x.dataset.dist)}px)`);dBar.style.setProperty('--p',p)}
+    if(ds&&ds.classList.contains('pinned')){const r=ds.getBoundingClientRect();const p=clamp(-r.top/Math.max(1,+ds.dataset.dist));dRowEls.forEach(x=>x.style.transform=`translateX(${-p*(+x.dataset.dist)}px)`);dBar.style.setProperty('--p',p)}
     if(hs.classList.contains('pinned')){const r=hs.getBoundingClientRect();const dist=+hs.dataset.dist;const p=clamp(-r.top/Math.max(1,dist));track.style.transform=`translateX(${-p*dist}px)`;bar.style.setProperty('--p',p)}
     // experience wire
     const rr=roles.getBoundingClientRect();const wp=clamp((vh*.6-rr.top)/rr.height);wire.style.setProperty('--p',wp);
@@ -160,7 +169,7 @@ document.addEventListener('click',e=>{const v=e.target.closest('[data-yt-inline]
 $$('.aw-art img').forEach(im=>{const ok=()=>im.parentElement.classList.add('has-img');if(im.complete){if(im.naturalWidth)ok();else im.remove()}else{im.addEventListener('load',ok);im.addEventListener('error',()=>im.remove())}});
 
 /* ---- scroll scenes: kinetic hero type, film frames, 12 days rows, parallax ---- */
-const kRows=$$('.k-row'),frSec=$('#frames'),frImgs=$$('.frame-stack img'),frCount=$('#frCount'),frBar=$('#frBar'),dSec=$('#days'),dA=$('#dRowA'),dB=$('#dRowB'),pars=$$('[data-par]');let frI=0;
+const kRows=$$('.k-row'),frSec=$('#frames'),frImgs=$$('.frame-stack img'),frCount=$('#frCount'),frBar=$('#frBar'),dSec=$('section#days'),dA=$('#dRowA'),dB=$('#dRowB'),pars=$$('[data-par]');let frI=0;
 function scenes(){
   const vh=innerHeight;
   if(!reduce){
@@ -201,7 +210,7 @@ function close(){lb.classList.remove('open');lb.setAttribute('aria-hidden','true
 tiles.forEach(t=>t.addEventListener('click',()=>{const v=$$('.tile',t.closest('.gallery')).filter(x=>x.offsetParent!==null);openList(v.map(x=>({src:`assets/work/${x.dataset.src}.jpg`,t:x.dataset.t,s:x.dataset.s})),v.indexOf(t),t)}));
 /* every other campaign image: click to enlarge, arrows step through its group */
 const zoomGroups=[
-  ['#track .card .shot img',null],
+  ['#track .card .shot:not(.cm-open) img',null],
   ['#dRowA .dcard img','12 Days of Data Center, 2025'],
   ['#dRowB .dcard img','12 Days of Data Center, 2024'],
   ['#concepts .cn:not(.alt) figure img','Neural Network'],
@@ -226,3 +235,46 @@ addEventListener('keydown',e=>{if(!lb.classList.contains('open'))return;if(e.key
 (()=>{const art='img,picture,video,#lb,.tile,.shot,.frame-stack,.frames .pin,.dcard,.card,.portrait,.concepts,.film';
 document.addEventListener('contextmenu',e=>{if(e.target.closest(art))e.preventDefault()});
 document.addEventListener('dragstart',e=>{if(e.target.closest('img,picture'))e.preventDefault()});})();
+
+/* ---- MP mark: optically centre the letters using their real ink box ---- */
+(()=>{const m=document.querySelector('.mark .m');if(!m)return;
+const draw=()=>{const cs=getComputedStyle(m);const w=m.clientWidth,h=m.clientHeight;const ctx=document.createElement('canvas').getContext('2d');
+  ctx.font=`${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;if('letterSpacing' in ctx)ctx.letterSpacing=cs.letterSpacing;
+  const t=ctx.measureText('MP');const iw=t.actualBoundingBoxLeft+t.actualBoundingBoxRight,ih=t.actualBoundingBoxAscent+t.actualBoundingBoxDescent;
+  if(!iw||!ih)return;const x=(w-iw)/2+t.actualBoundingBoxLeft,y=(h-ih)/2+t.actualBoundingBoxAscent;
+  const ns='http://www.w3.org/2000/svg';let svg=m.querySelector('svg');if(!svg){svg=document.createElementNS(ns,'svg');svg.setAttribute('aria-hidden','true');svg.appendChild(document.createElementNS(ns,'text'));m.appendChild(svg)}
+  svg.setAttribute('viewBox',`0 0 ${w} ${h}`);const tx=svg.firstChild;tx.textContent='MP';
+  Object.entries({x,y,fill:getComputedStyle(m).getPropertyValue('--mk')||'#e3162f','font-family':cs.fontFamily,'font-weight':cs.fontWeight,'font-size':cs.fontSize,'letter-spacing':cs.letterSpacing}).forEach(([k,v])=>tx.setAttribute(k,v));
+  tx.setAttribute('fill','#070708');
+  m.classList.add('svgd')};
+(document.fonts?document.fonts.ready:Promise.resolve()).then(draw);addEventListener('resize',draw)})();
+
+/* ---- campaign gallery overlay ---- */
+(()=>{const $=(s,c=document)=>c.querySelector(s),$$=(s,c=document)=>[...c.querySelectorAll(s)];const cm=$('#cm');if(!cm)return;
+const img=$('#cmImg'),cap=$('#cmCap'),cnt=$('#cmC'),th=$('#cmTh');let data=null,i=0,opener=null,savedY=0;
+const vid=()=>{const f=$('#cmStage iframe');f&&f.remove()};
+const show=k=>{i=(k+data.items.length)%data.items.length;const it=data.items[i];vid();
+  if(it.yt){img.hidden=true;img.removeAttribute('src');const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${it.yt}?rel=0`;f.title=it.alt;f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.className='cm-yt';img.after(f)}else{img.hidden=false;img.src=it.src;img.alt=it.alt}
+  cap.textContent=it.cap||'';cnt.textContent=`${String(i+1).padStart(2,'0')} / ${String(data.items.length).padStart(2,'0')}`;
+  $$('button',th).forEach((b,j)=>b.setAttribute('aria-current',j===i?'true':'false'));const cur=th.children[i];cur&&cur.scrollIntoView({block:'nearest',inline:'nearest'});
+  const nx=data.items[(i+1)%data.items.length];if(nx&&nx.src){const pre=new Image();pre.src=nx.src}};
+const open=(id,from)=>{const el=document.getElementById('cm-'+id);if(!el)return;data=JSON.parse(el.textContent);opener=from;
+  $('#cmTag').textContent=data.tag||'';$('#cmT').textContent=data.title;$('#cmD').textContent=data.desc||'';
+  $('#cmCr').innerHTML='';(data.credits||[]).forEach(([t,d])=>{const w=document.createElement('div');w.innerHTML='<dt></dt><dd></dd>';w.firstChild.textContent=t;w.lastChild.textContent=d;$('#cmCr').append(w)});
+  th.innerHTML='';data.items.forEach((it,j)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',`Show image ${j+1}: ${it.alt}`);const t=document.createElement('img');t.src=it.thumb||it.src;t.alt='';b.append(t);b.addEventListener('click',()=>show(j));th.append(b)});
+  const multi=data.items.length>1;$('#cmP').hidden=$('#cmN').hidden=!multi;th.hidden=!multi;
+  savedY=scrollY;document.documentElement.style.scrollBehavior='auto';document.body.style.cssText+=`;position:fixed;top:${-savedY}px;left:0;right:0;overflow:hidden`;
+  window.motionPaused=window.motionPaused;cm.hidden=false;requestAnimationFrame(()=>cm.classList.add('open'));show(0);$('#cmX').focus()};
+const close=()=>{vid();cm.classList.remove('open');cm.hidden=true;['position','top','left','right','overflow'].forEach(k=>document.body.style.removeProperty(k));
+  scrollTo(0,savedY);requestAnimationFrame(()=>document.documentElement.style.scrollBehavior='');opener&&opener.focus&&opener.focus({preventScroll:true})};
+$$('.cm-open').forEach(el=>{el.addEventListener('click',e=>{e.preventDefault();open(el.dataset.campaign,el)});
+  if(el.getAttribute('role')==='button')el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open(el.dataset.campaign,el)}})});
+$('#cmX').addEventListener('click',close);$('#cmP').addEventListener('click',()=>show(i-1));$('#cmN').addEventListener('click',()=>show(i+1));
+cm.addEventListener('click',e=>{if(e.target===cm)close()});
+document.addEventListener('keydown',e=>{if(cm.hidden)return;
+  if(e.key==='Escape'){e.preventDefault();close()}else if(e.key==='ArrowRight')show(i+1);else if(e.key==='ArrowLeft')show(i-1);
+  else if(e.key==='Tab'){const f=$$('button:not([hidden]),[href],[tabindex]:not([tabindex="-1"])',cm).filter(x=>x.offsetParent!==null);const a=f.indexOf(document.activeElement);
+    if(e.shiftKey&&a<=0){e.preventDefault();f.at(-1).focus()}else if(!e.shiftKey&&a===f.length-1){e.preventDefault();f[0].focus()}}});
+let x0=null,y0=0;const st=$('#cmStage');st.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});
+st.addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy))show(i+(dx<0?1:-1));x0=null});
+})();

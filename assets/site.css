@@ -704,3 +704,81 @@ img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none;user-select
 .rights a:hover{color:var(--red)}
 
 footer .legal{max-width:62ch;line-height:1.5}
+
+/* v9: iPad feedback */
+html,body{overscroll-behavior-y:none}
+.mark .m{font-size:21px;letter-spacing:.02em;position:relative}
+.mark .m svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.mark .m.svgd{color:transparent}
+.roles::before,.roles .wire{top:18px}
+.roles::before{bottom:auto;height:calc(100% - 18px)}
+.roles .wire{height:calc(100% - 18px)}
+.roll{display:inline-flex;align-items:flex-start;overflow:hidden;height:.9em;line-height:.9em;vertical-align:bottom}
+.roll .col,.roll .sep{flex:none}
+.roll .sep{display:block;height:.9em;line-height:.9em}
+.num .fig{align-items:flex-end}
+.num .fig .unit,.num .fig .pre{line-height:1}
+/* full menu becomes the overlay menu below 1180px so the links never wrap (iPad) */
+@media (max-width:1180px){
+  .nav ul{position:fixed;inset:0;background:var(--ink);flex-direction:column;justify-content:center;gap:6px;opacity:0;pointer-events:none;visibility:hidden;transition:opacity .35s,visibility 0s .35s}
+  .nav ul.open{opacity:1;pointer-events:auto;visibility:visible;transition:opacity .35s}
+  .nav ul a:not(.btn){font-family:var(--display);font-weight:800;font-size:48px;letter-spacing:0;color:var(--paper)}
+  .nav ul a:not(.btn)::after{display:none}
+  .nav .btn{margin:18px 0 0}
+  .menu-btn{display:block;z-index:60}
+}
+
+/* logo B: solid red tile, MP knocked out */
+.mark .m{background:var(--red);border-color:var(--red);color:#070708}
+.mark .m.svgd{color:transparent}
+/* ===== campaign gallery overlay (prototype: Bring Broadband Home) ===== */
+.card .shot.cm-open{cursor:zoom-in}
+.card .shot.cm-open:focus-visible{outline:2px solid var(--red);outline-offset:-2px}
+.cm-chip{position:absolute;right:12px;bottom:12px;z-index:2;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;background:rgba(7,7,8,.78);padding:6px 9px;border:1px solid var(--line-2)}
+button.card-link{background:none;border:0;padding:0;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.cm{position:fixed;inset:0;z-index:200;background:rgba(5,5,6,.96);display:flex;opacity:0;transition:opacity .3s var(--ease)}
+.cm[hidden]{display:none}
+.cm.open{opacity:1}
+.cm-panel{position:relative;margin:auto;width:100%;height:100%;max-width:1600px;display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);gap:clamp(24px,3vw,48px);padding:clamp(56px,7vh,80px) clamp(20px,3vw,48px) clamp(20px,3vh,36px)}
+.cm-x{position:absolute;top:14px;right:14px;width:48px;height:48px;display:grid;place-items:center;border:1px solid var(--line-2);color:var(--paper);z-index:3;background:var(--ink)}
+.cm-x svg{width:20px;height:20px}
+.cm-x:hover,.cm-nav:hover{border-color:var(--red);color:#fff}
+.cm-head{align-self:start;overflow:auto;max-height:100%;padding-right:6px}
+.cm-head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--red)}
+.cm-head h2{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(34px,3vw,52px);line-height:.92;margin-top:14px}
+.cm-head p{color:var(--muted);font-size:15px;line-height:1.6;margin-top:16px}
+.cm-head .credit{margin-top:20px}
+.cm-main{min-width:0;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:14px}
+.cm-stage{position:relative;min-height:0;display:grid;place-items:center;background:#000;border:1px solid var(--line);touch-action:pan-y}
+.cm-stage figure{margin:0;width:100%;height:100%;display:grid;grid-template-rows:minmax(0,1fr) auto}
+.cm-stage img{width:100%;height:100%;object-fit:contain;display:block;min-height:0}
+.cm-stage figcaption{padding:12px 16px;font-size:14px;color:var(--muted);border-top:1px solid var(--line);background:var(--ink)}
+.cm-nav{position:absolute;top:calc(50% - 40px);width:48px;height:48px;display:grid;place-items:center;background:rgba(7,7,8,.75);border:1px solid var(--line-2);color:var(--paper)}
+.cm-nav svg{width:22px;height:22px}
+.cm-nav.prev{left:12px}.cm-nav.next{right:12px}
+.cm-count{position:absolute;top:12px;left:12px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;background:rgba(7,7,8,.75);padding:6px 9px}
+.cm-thumbs{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
+.cm-thumbs button{flex:none;width:120px;aspect-ratio:16/10;border:1px solid var(--line-2);padding:0;opacity:.55;transition:opacity .25s,border-color .25s;background:#000}
+.cm-thumbs button img{width:100%;height:100%;object-fit:cover;display:block}
+.cm-thumbs button[aria-current="true"]{opacity:1;border-color:var(--red)}
+.cm-thumbs button:hover{opacity:1}
+@media (max-width:1024px){
+  .cm-panel{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);overflow:auto;padding-top:72px}
+  .cm-head{max-height:none;overflow:visible;padding-right:56px}
+  .cm-main{min-height:60vh}
+}
+@media (max-width:640px){.cm-thumbs button{width:88px}.cm-head p{font-size:14px}}
+@media (prefers-reduced-motion:reduce){.cm{transition:none}}
+/* stacked cards (iPad, phone): title and description sit above the preview */
+@media (max-width:1024px){
+  .hs:not(.pinned) .card .shot{order:5;margin:20px -30px 0;border-top:1px solid var(--line);border-bottom:0}
+  .hs:not(.pinned) .card .card-link,.hs:not(.pinned) .card .credit,.hs:not(.pinned) .card .role{order:6}
+  .hs:not(.pinned) .card{padding-bottom:0}
+  .hs:not(.pinned) .card > :last-child{margin-bottom:24px}
+  .hs:not(.pinned) .card .shot:last-child{margin-bottom:0}
+}
+.cm{background:#060607}
+.cm-stage .cm-yt{width:100%;height:100%;border:0;display:block;min-height:0;aspect-ratio:16/9;max-height:100%}
+.anchor-alias{display:block;height:0;overflow:hidden}
+
+.roll .col::before{line-height:var(--lh,.9em)}
