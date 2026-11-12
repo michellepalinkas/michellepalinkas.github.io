@@ -697,3 +697,8 @@ footer a:hover{color:var(--red)}
 @media (max-width:600px){.kit-list div{grid-template-columns:1fr;gap:4px;padding:12px 0}}
 /* image protection */
 img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
+
+/* photography rights note */
+.rights{margin-top:22px;font-size:14px;line-height:1.5;color:var(--muted);max-width:60ch}
+.rights a{color:var(--paper);border-bottom:1px solid var(--red)}
+.rights a:hover{color:var(--red)}
