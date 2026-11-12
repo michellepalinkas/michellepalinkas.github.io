@@ -681,3 +681,4 @@ footer a:hover{color:var(--red)}
 .film .film-btn{position:absolute;inset:0;width:100%;height:100%;padding:0;margin:0;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;z-index:1}
 .film .film-btn:focus-visible{outline:2px solid var(--red);outline-offset:-4px}
 .film iframe{z-index:2}
+@media (prefers-reduced-motion:reduce){.frames{height:auto!important}.frames .pin{height:auto!important;overflow:visible}}
