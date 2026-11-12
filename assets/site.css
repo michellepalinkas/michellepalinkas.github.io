@@ -702,3 +702,5 @@ img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none;user-select
 .rights{margin-top:22px;font-size:14px;line-height:1.5;color:var(--muted);max-width:60ch}
 .rights a{color:var(--paper);border-bottom:1px solid var(--red)}
 .rights a:hover{color:var(--red)}
+
+footer .legal{max-width:62ch;line-height:1.5}
