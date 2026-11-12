@@ -178,17 +178,17 @@ $$('.d-ctrl button').forEach(b=>b.addEventListener('click',()=>{const r=document
 /* ---- gallery ---- */
 const tiles=$$('.tile');
 /* masonry that keeps reading order, so each collection stays together */
-const gal=$('#gallery');
-function masonry(){if(!gal)return;const cs=getComputedStyle(gal);const row=parseFloat(cs.gridAutoRows)||2,gap=14;
-  tiles.forEach(t=>{if(t.offsetParent===null)return;const im=t.querySelector('img');const r=(+im.getAttribute('height')||3)/(+im.getAttribute('width')||4);const h=Math.min(t.clientWidth*r,560);t.style.gridRowEnd='span '+Math.ceil((h+gap)/row)})}
-gal&&gal.classList.add('masonry');masonry();addEventListener('resize',masonry);
+const gals=$$('.gallery');
+function masonry(){gals.forEach(gal=>{const cs=getComputedStyle(gal);const row=parseFloat(cs.gridAutoRows)||2,gap=14;
+  $$('.tile',gal).forEach(t=>{if(t.offsetParent===null)return;const im=t.querySelector('img');const r=(+im.getAttribute('height')||3)/(+im.getAttribute('width')||4);const h=Math.min(t.clientWidth*r,560);t.style.gridRowEnd='span '+Math.ceil((h+gap)/row)})})}
+gals.forEach(gal=>gal.classList.add('masonry'));masonry();addEventListener('resize',masonry);
 const tio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');tio.unobserve(e.target)}}),{threshold:.1});
 tiles.forEach(t=>tio.observe(t));
 const g=$('#gallery'),mbtn=$('#moreBtn');
 mbtn.addEventListener('click',()=>{const o=!g.classList.contains('all');g.classList.toggle('all',o);mbtn.setAttribute('aria-expanded',o);mbtn.textContent=o?'Show less':'Show all work';masonry();if(!o)$('#portfolio').scrollIntoView()});
 $$('.filters button').forEach(b=>b.addEventListener('click',()=>{
   $$('.filters button').forEach(x=>x.setAttribute('aria-pressed',x===b));
-  const f=b.dataset.f;tiles.forEach(t=>t.classList.toggle('hide',f!=='all'&&t.dataset.c!==f));
+  const f=b.dataset.f;$$('.tile',g).forEach(t=>t.classList.toggle('hide',f!=='all'&&t.dataset.c!==f));
   if(f!=='all'){g.classList.add('all');mbtn.parentElement.hidden=true}else{g.classList.remove('all');mbtn.parentElement.hidden=false;mbtn.setAttribute('aria-expanded',false);mbtn.textContent='Show all work'}
   masonry();
 }));
@@ -198,7 +198,7 @@ function show(i){cur=(i+items.length)%items.length;const t=items[cur];li.removeA
 function openList(list,i,from){items=list;last=from;show(i);lb.classList.add('open');lb.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';$('#lbX').focus()}
 function close(){lb.classList.remove('open');lb.setAttribute('aria-hidden','true');document.body.style.overflow='';last&&last.focus&&last.focus()}
 /* portfolio tiles */
-tiles.forEach(t=>t.addEventListener('click',()=>{const v=tiles.filter(x=>x.offsetParent!==null);openList(v.map(x=>({src:`assets/work/${x.dataset.src}.jpg`,t:x.dataset.t,s:x.dataset.s})),v.indexOf(t),t)}));
+tiles.forEach(t=>t.addEventListener('click',()=>{const v=$$('.tile',t.closest('.gallery')).filter(x=>x.offsetParent!==null);openList(v.map(x=>({src:`assets/work/${x.dataset.src}.jpg`,t:x.dataset.t,s:x.dataset.s})),v.indexOf(t),t)}));
 /* every other campaign image: click to enlarge, arrows step through its group */
 const zoomGroups=[
   ['#track .card .shot img',null],
@@ -222,3 +222,7 @@ lb.addEventListener('click',e=>{if(e.target===lb||e.target.tagName==='FIGURE')cl
 addEventListener('keydown',e=>{if(!lb.classList.contains('open'))return;if(e.key==='Escape')close();if(e.key==='ArrowLeft')show(cur-1);if(e.key==='ArrowRight')show(cur+1);
   if(e.key==='Tab'){const f=$$('button',lb);const i=f.indexOf(document.activeElement);if(e.shiftKey&&i<=0){e.preventDefault();f.at(-1).focus()}else if(!e.shiftKey&&i===f.length-1){e.preventDefault();f[0].focus()}}});
 })();
+/* ---- image protection: no right click save, drag or long press save on artwork ---- */
+(()=>{const art='img,picture,video,#lb,.tile,.shot,.frame-stack,.frames .pin,.dcard,.card,.portrait,.concepts,.film';
+document.addEventListener('contextmenu',e=>{if(e.target.closest(art))e.preventDefault()});
+document.addEventListener('dragstart',e=>{if(e.target.closest('img,picture'))e.preventDefault()});})();

@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=202611112124">
+<link rel="stylesheet" href="assets/site.css?v=202611112221">
 <script>document.documentElement.classList.add('js');setTimeout(function(){if(!window.siteReady)document.documentElement.classList.remove('js')},4000)</script>
 </head>
 <body>
@@ -36,6 +36,7 @@
         <li><a href="#work">Selected work</a></li>
         <li><a href="#experience">Experience</a></li>
         <li><a href="#portfolio">Earlier work</a></li>
+        <li><a href="#photography">Photography</a></li>
         <li><a href="#toolkit">Toolkit</a></li>
         <li><a class="btn small" href="#contact">Get in touch</a></li>
       </ul>
@@ -379,7 +380,6 @@
       <button aria-pressed="false" data-f="viz">Visualization</button>
       <button aria-pressed="false" data-f="art">Illustration</button>
       <button aria-pressed="false" data-f="brand">Logos and print</button>
-      <button aria-pressed="false" data-f="photo">Photography</button>
     </div>
     <div class="gallery" id="gallery">
       <button class="tile" data-c="3d" data-src="kamaitachi-concept" data-t="Kamaitachi, concept" data-s="Concept art by William Niu that the model was built from." aria-label="Open Kamaitachi, concept"><img src="assets/work/kamaitachi-concept-sm.jpg" width="900" height="503" alt="Kamaitachi, concept" loading="lazy" decoding="async"><span class="meta"><small>3D character</small><b>Kamaitachi, concept</b></span></button>
@@ -455,40 +455,60 @@
       <button class="tile more" data-c="brand" data-src="royal-tire-billboard" data-t="Royal Tire and Air, billboard" data-s="Billboard design, installed." aria-label="Open Royal Tire and Air, billboard"><img src="assets/work/royal-tire-billboard-sm.jpg" width="900" height="675" alt="Royal Tire and Air, billboard" loading="lazy" decoding="async"><span class="meta"><small>Logos and print</small><b>Royal Tire and Air, billboard</b></span></button>
       <button class="tile more" data-c="brand" data-src="royal-tire-hat" data-t="Royal Tire and Air, merch" data-s="Embroidered hat with the logo." aria-label="Open Royal Tire and Air, merch"><img src="assets/work/royal-tire-hat-sm.jpg" width="720" height="960" alt="Royal Tire and Air, merch" loading="lazy" decoding="async"><span class="meta"><small>Logos and print</small><b>Royal Tire and Air, merch</b></span></button>
       <button class="tile more" data-c="brand" data-src="terraces" data-t="The Terraces at Deer Run" data-s="Logo design." aria-label="Open The Terraces at Deer Run"><img src="assets/work/terraces-sm.jpg" width="900" height="513" alt="The Terraces at Deer Run" loading="lazy" decoding="async"><span class="meta"><small>Logos and print</small><b>The Terraces at Deer Run</b></span></button>
-      <button class="tile more" data-c="photo" data-src="swings" data-t="Swings" data-s="Black and white photography." aria-label="Open Swings"><img src="assets/work/swings-sm.jpg" width="479" height="604" alt="Swings" loading="lazy" decoding="async"><span class="meta"><small>Photography</small><b>Swings</b></span></button>
+      <button class="tile more" data-c="art" data-src="swings" data-t="Swings" data-s="Illustration drawn over my own black and white photograph." aria-label="Open Swings"><img src="assets/work/swings-sm.jpg" width="479" height="604" alt="Swings" loading="lazy" decoding="async"><span class="meta"><small>Illustration</small><b>Swings</b></span></button>
     </div>
     <div class="more-row"><button class="btn ghost" id="moreBtn" aria-expanded="false" aria-controls="gallery">Show all work</button></div>
   </div>
 </section>
 
 <!-- TOOLKIT -->
+<section class="sec" id="photography" aria-labelledby="ph-h">
+  <div class="wrap">
+    <div class="hs-head">
+      <div>
+        <span class="idx"><b>10</b> Photography</span>
+        <h2 class="title" id="ph-h" data-reveal>Behind<br><em>the lens</em></h2>
+      </div>
+      <p class="lede">Portraits, live music and the machines of spaceflight, shot on my own time.</p>
+    </div>
+    <div class="gallery" id="photoGallery">
+      <button class="tile" data-c="photo" data-src="portrait-mohawk" data-t="Mohawk" data-s="Candid portrait photography, used with permission." aria-label="Open Mohawk"><img src="assets/work/portrait-mohawk-sm.jpg" width="900" height="600" alt="Mohawk, candid portrait" loading="lazy" decoding="async"><span class="meta"><small>Photography</small><b>Mohawk</b></span></button>
+      <button class="tile" data-c="photo" data-src="portrait-backlit" data-t="Backlit" data-s="Candid portrait photography, used with permission." aria-label="Open Backlit"><img src="assets/work/portrait-backlit-sm.jpg" width="900" height="600" alt="Backlit, candid portrait" loading="lazy" decoding="async"><span class="meta"><small>Photography</small><b>Backlit</b></span></button>
+      <button class="tile" data-c="photo" data-src="portrait-copilots" data-t="Copilots" data-s="Candid portrait photography, used with permission." aria-label="Open Copilots"><img src="assets/work/portrait-copilots-sm.jpg" width="900" height="600" alt="Copilots, candid portrait" loading="lazy" decoding="async"><span class="meta"><small>Photography</small><b>Copilots</b></span></button>
+      <button class="tile" data-c="photo" data-src="portrait-point" data-t="You" data-s="Candid portrait photography, used with permission." aria-label="Open You"><img src="assets/work/portrait-point-sm.jpg" width="900" height="600" alt="You, candid portrait" loading="lazy" decoding="async"><span class="meta"><small>Photography</small><b>You</b></span></button>
+      <button class="tile" data-c="photo" data-src="portrait-bounce" data-t="Bounce" data-s="Candid portrait photography, used with permission." aria-label="Open Bounce"><img src="assets/work/portrait-bounce-sm.jpg" width="900" height="600" alt="Bounce, candid portrait" loading="lazy" decoding="async"><span class="meta"><small>Photography</small><b>Bounce</b></span></button>
+      <button class="tile" data-c="photo" data-src="portrait-big-wheel" data-t="Big Wheel" data-s="Candid portrait photography, used with permission." aria-label="Open Big Wheel"><img src="assets/work/portrait-big-wheel-sm.jpg" width="900" height="600" alt="Big Wheel, candid portrait" loading="lazy" decoding="async"><span class="meta"><small>Photography</small><b>Big Wheel</b></span></button>
+      <button class="tile" data-c="photo" data-src="photo-red-room" data-t="Red Room" data-s="Live music photography." aria-label="Open Red Room"><img src="assets/work/photo-red-room-sm.jpg" width="900" height="506" alt="Red Room" loading="lazy" decoding="async"><span class="meta"><small>Photography</small><b>Red Room</b></span></button>
+      <button class="tile" data-c="photo" data-src="photo-blue-room" data-t="Blue Room" data-s="Live music photography." aria-label="Open Blue Room"><img src="assets/work/photo-blue-room-sm.jpg" width="675" height="900" alt="Blue Room" loading="lazy" decoding="async"><span class="meta"><small>Photography</small><b>Blue Room</b></span></button>
+      <button class="tile" data-c="photo" data-src="photo-saturn-v" data-t="Saturn V" data-s="The five F-1 engines of the Saturn V first stage, Kennedy Space Center." aria-label="Open Saturn V"><img src="assets/work/photo-saturn-v-sm.jpg" width="900" height="600" alt="Saturn V" loading="lazy" decoding="async"><span class="meta"><small>Photography</small><b>Saturn V</b></span></button>
+      <button class="tile" data-c="photo" data-src="photo-external-tank" data-t="External Tank" data-s="Space Shuttle external tank and boosters, from below." aria-label="Open External Tank"><img src="assets/work/photo-external-tank-sm.jpg" width="600" height="900" alt="External Tank" loading="lazy" decoding="async"><span class="meta"><small>Photography</small><b>External Tank</b></span></button>
+      <button class="tile" data-c="photo" data-src="photo-satellite" data-t="Satellite" data-s="A satellite suspended against the atrium glass." aria-label="Open Satellite"><img src="assets/work/photo-satellite-sm.jpg" width="900" height="600" alt="Satellite" loading="lazy" decoding="async"><span class="meta"><small>Photography</small><b>Satellite</b></span></button>
+      <button class="tile" data-c="photo" data-src="photo-remembered" data-t="Forever Remembered" data-s="Memorial exhibit, Kennedy Space Center." aria-label="Open Forever Remembered"><img src="assets/work/photo-remembered-sm.jpg" width="600" height="900" alt="Forever Remembered" loading="lazy" decoding="async"><span class="meta"><small>Photography</small><b>Forever Remembered</b></span></button>
+      <button class="tile" data-c="photo" data-src="photo-hummingbird" data-t="Hummingbird" data-s="A hummingbird approaching the feeder, backyard wildlife." aria-label="Open Hummingbird"><img src="assets/work/photo-hummingbird-sm.jpg" width="900" height="600" alt="Hummingbird" loading="lazy" decoding="async"><span class="meta"><small>Photography</small><b>Hummingbird</b></span></button>
+    </div>
+  </div>
+</section>
+
 <section class="sec" id="toolkit" aria-labelledby="kit-h">
   <div class="wrap">
-    <span class="idx"><b>10</b> Toolkit</span>
+    <span class="idx"><b>11</b> Toolkit</span>
     <h2 class="title" id="kit-h" data-reveal>Hands on,<br><span class="o">head up</span></h2>
     <p class="lede">I lead with strategy and still know the tools well enough to fix the render myself.</p>
     <div class="kit">
       <div class="panel brk" data-fade>
         <h3>Leadership</h3>
-        <div class="pills">
-          <span class="pill">Creative direction</span><span class="pill">Video direction</span><span class="pill">Visual storytelling</span><span class="pill">Creative strategy</span><span class="pill">Brand identity</span><span class="pill">Brand governance</span><span class="pill">Marketing campaigns</span><span class="pill">Product photography</span><span class="pill">Team leadership</span><span class="pill">Partner coordination</span><span class="pill">Coaching and mentoring</span><span class="pill">Budgets and vendor management</span><span class="pill">Production pipelines</span><span class="pill">Workflow automation</span><span class="pill">Trade show design</span>
-        </div>
-        <h3 style="margin-top:28px">3D and real time</h3>
-        <div class="pills">
-          <span class="pill">Maya</span><span class="pill">KeyShot</span><span class="pill">Unreal Engine</span><span class="pill">ZBrush</span><span class="pill">Substance</span><span class="pill">RenderMan</span><span class="pill">XGen</span>
-        </div>
-        <h3 style="margin-top:28px">Film, motion and audio</h3>
-        <div class="pills">
-          <span class="pill">After Effects</span><span class="pill">Premiere Pro</span><span class="pill">Final Cut Pro</span><span class="pill">Audacity</span>
-        </div>
-        <h3 style="margin-top:28px">Design and interactive</h3>
-        <div class="pills">
-          <span class="pill">Photoshop</span><span class="pill">Illustrator</span><span class="pill">Ceros</span><span class="pill">Flipsnack</span><span class="pill">Python</span>
-        </div>
-        <h3 style="margin-top:28px">AI</h3>
-        <div class="pills">
-          <span class="pill">Runway</span><span class="pill">Seedance</span><span class="pill">Adobe Firefly</span><span class="pill">Claude</span><span class="pill">ChatGPT</span>
-        </div>
+        <dl class="kit-list">
+          <div><dt>Creative direction</dt><dd>Creative strategy, film direction, brand identity and governance, integrated campaigns</dd></div>
+          <div><dt>Team leadership</dt><dd>Coaching and mentoring, partner coordination</dd></div>
+          <div><dt>Studio operations</dt><dd>Budgets and vendor management, production pipelines, workflow automation</dd></div>
+        </dl>
+        <h3 class="kit-h">Tools</h3>
+        <dl class="kit-list">
+          <div><dt>3D and real time</dt><dd>Maya, KeyShot, Unreal Engine, ZBrush, Substance, RenderMan, XGen</dd></div>
+          <div><dt>Film, motion and audio</dt><dd>After Effects, Premiere Pro, Final Cut Pro, Audacity</dd></div>
+          <div><dt>Design and interactive</dt><dd>Photoshop, Illustrator, Ceros, Flipsnack, Python</dd></div>
+          <div><dt>AI</dt><dd>Runway, Seedance, Adobe Firefly, Claude, ChatGPT</dd></div>
+        </dl>
       </div>
       <div class="panel brk" data-fade style="--d:.12s">
         <h3>Education</h3>
@@ -506,7 +526,7 @@
 <section class="contact sec" id="contact" aria-labelledby="ct-h">
   <div class="glow" aria-hidden="true"></div>
   <div class="wrap">
-    <span class="idx"><b>11</b> Contact</span>
+    <span class="idx"><b>12</b> Contact</span>
     <h2 id="ct-h"><span class="l" data-x="-1">Let's make</span><span class="l o" data-x="1">something</span><span class="l" data-x="-1"><em>with teeth.</em></span></h2>
     <p class="lede">Open to creative leadership roles, remote first.</p>
     <div class="row">
@@ -537,6 +557,6 @@
   </div>
 </div>
 
-<script src="assets/site.js?v=202611112124"></script>
+<script src="assets/site.js?v=202611112221"></script>
 </body>
 </html>
