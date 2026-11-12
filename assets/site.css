@@ -782,3 +782,13 @@ button.card-link{background:none;border:0;padding:0;cursor:pointer;text-align:le
 .anchor-alias{display:block;height:0;overflow:hidden}
 
 .roll .col::before{line-height:var(--lh,.9em)}
+.cm-thumbs button.vid::after{content:"▶";position:absolute;left:6px;bottom:4px;font-size:11px;color:#fff;text-shadow:0 0 4px #000}.cm-thumbs button{position:relative}.cm-stage video.cm-yt{object-fit:contain;background:#000}
+/* keep tall (portrait) images inside the gallery stage */
+@media (min-width:1025px){.cm-panel{grid-template-rows:minmax(0,1fr)}}
+.cm-stage{grid-template-rows:minmax(0,1fr);overflow:hidden}
+.cm-stage figure{min-height:0;overflow:hidden}
+/* small phones: never let a gallery or award card grow past the screen */
+@media (max-width:1024px){.cm-panel{grid-template-columns:minmax(0,1fr)}.cm-head,.cm-main{min-width:0}}
+.awards3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:900px){.awards3{grid-template-columns:minmax(0,1fr)}}
+.aw b{overflow-wrap:anywhere}
